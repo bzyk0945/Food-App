@@ -4,7 +4,7 @@ import heroImg from "../../assets/hero-img.png";
 import arrowIcon from "../../assets/icons/arrow-icon.svg";
 export const HeroSection: React.FC = () => {
   return (
-    <section className="flex flex-wrap items-center">
+    <section className="flex flex-wrap items-center mt-20">
       <div className="text-center w-full lg:w-1/2 px-4">
         <h5 className="text-xl font-semibold mb-4">
           Easy way to to make an order

@@ -7,11 +7,18 @@ import shoppingBagIcon from "../assets/icons/shopping-bag-icon.svg";
 import menuIcon from "../assets/icons/menu-icon.svg";
 import closeIcon from "../assets/icons/menu-close-icon.svg";
 import { navLists } from "../constants";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export const Navbar: React.FC = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState<boolean>(false);
+  const [cartOpen, setCartOpen] = useState(false)
+  const cartItems = useSelector((state: RootState) => state.cart)
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
+  };
+  const toggleCart = () => {
+    setCartOpen(!cartOpen);
   };
 
   return (
@@ -48,8 +55,9 @@ export const Navbar: React.FC = () => {
             <button className="px-2 py-1">
               <img src={personIcon} alt="user icon" />
             </button>
-            <button className="px-2 py-1">
+            <button className="relative px-2 py-1" onClick={toggleCart}>
               <img src={shoppingBagIcon} alt="shopping bag icon" />
+              <span className="absolute top-0 right-[-3px] text-red-500 font-semibold">{cartItems.length}</span>
             </button>
             <button onClick={toggleNavbar} className="px-2 py-1 lg:hidden">
               <img
@@ -82,6 +90,30 @@ export const Navbar: React.FC = () => {
             </ul>
           </div>
         )}
+         {cartOpen && (
+        <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4">
+          <h2 className="text-lg font-semibold mb-2">Cart Items</h2>
+          {cartItems.length === 0 ? (
+            <p>Your cart is empty</p>
+          ) : (
+            <ul>
+              {cartItems.map((item, index) => (
+                <li key={index} className="flex items-center mb-2">
+                  <img
+                    src={item.strCategoryThumb}
+                    alt={item.strCategory}
+                    className="w-10 h-10 rounded-full mr-2"
+                  />
+                  <div>
+                    <p className="font-semibold">{item.strCategory}</p>
+                    <p className="text-sm">{item.strCategoryDescription}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       </nav>
     </header>
   );
